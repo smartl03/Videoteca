@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      lang="es"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FlickPicks</title>
+        <style>
+            /* Estilos para adaptar los colores al tema de películas y series */
+            body {
+                background-color: #F0F0F0; /* Cambio a un gris claro */
+                font-family: Arial, sans-serif;
+                margin: 0;
+                background-image: url("./imagenes/fondoModificarPelicula.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            header {
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                padding: 10px;
+                text-align: center;
+                height: 10vh;
+                width: 100vw;
+            }
+
+            footer {
+                position: absolute;
+                bottom: 0vh;
+                width: 100vw;
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .datos{
+                display: flex;
+                width: 40vw;
+                margin-left: 30vw;
+                height: 55vh;
+                margin-top: 5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 4.5vw;
+            }
+
+            .filtros{
+                display: flex;
+                width: 40vw;
+                margin-left: 30vw;
+                height: 10vh;
+                margin-top: 5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 2vw;
+            }
+
+            .seccion{
+                display: block;
+                margin-left: 3.2vw;
+            }
+
+            .botones{
+                width: 15vw;
+                margin-top: 2vh;
+                margin-left: -2vw;
+                background: #555555;
+            }
+
+            .base{
+                position: absolute;
+                display: flex;
+                width: 100%;
+                height: 90%;
+
+            }
+
+            .label{
+                width: 100%;
+                margin-top: 20px;
+                color: white;
+            }
+
+            .combo {
+                margin-left: 15px;
+                height: 5vh;
+                top: 2.2vh;
+                width: 8vw;
+            }
+
+            .comboAnio {
+                margin-left: 15px;
+                height: 5vh;
+                top: 2.2vh;
+                width: 5vw;
+            }
+
+            h2{
+                color: white;
+            }
+            
+            .usuario{
+                position: absolute;
+                top:-2vh;
+                left: 5vw;
+                width: 15vw;
+            }
+        </style>
+    </h:head>
+    <header>
+        <div class="usuario">
+            <h:outputLabel style="width: 15vw; margin-top: -2vh;"><h5>usuario</h5></h:outputLabel>
+            <h:outputLabel value="#{controladorComentarios.persona.correo}" style="width: 15vw; margin-top: -2vh;"/>
+        </div>
+        <h:outputLabel><h1>FlickPicks administrador</h1></h:outputLabel>
+
+    </header>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton 
+                value="Regresar" 
+                class="boton" 
+                action="#{controladorModificarPelicula.regresar()}" 
+                style="
+                position: absolute;
+                right: 2vw;
+                top: 3vh;
+                height: 40px;
+                border-radius: 10px;
+                background: #009999;
+                color: white;
+                width: 10vw;"/>
+            <p:messages id="messages" showDetail="true" closable="true" class="error">
+                <p:autoUpdate/>
+            </p:messages>
+            <div class="filtros">
+                <p:selectOneMenu value="#{controladorModificarPelicula.pelicula.genero}" label="Seleccione Genero" class="combo">
+                    <p:ajax event="change" update="peliculas"  listener="#{controladorModificarPelicula.conseguir()}" />
+                    <f:selectItems var="genero" value="#{controladorModificarPelicula.generos}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{controladorModificarPelicula.pelicula.titulo}" class="combo" id="peliculas">
+                    <p:ajax event="change" update="anio"  listener="#{controladorModificarPelicula.ponerAnio()}" />
+                    <f:selectItems value="#{controladorModificarPelicula.titulos}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu value="#{controladorModificarPelicula.pelicula.anio}" class="comboAnio" id="anio">
+                    <p:ajax event="change" update="form"  listener="#{controladorModificarPelicula.ponerPelicula()}" />
+                    <f:selectItems value="#{controladorModificarPelicula.anios}"/>
+                </p:selectOneMenu>
+            </div>
+            <div class="datos" id="datos">
+                <section class="seccion"> 
+                    <p class="label">Titulo</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.titulo}"/>
+                    <p class="label">Género</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.genero}"/>
+                    <p class="label">Año</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.anio}"/>
+                    <p class="label">Duración</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.duracion}"/>
+                    <p class="label">Precio</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.precio}"/>
+                </section > 
+                <section class="seccion"> 
+                    <p class="label">Director</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.director}"/>
+                    <p class="label">Actores</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.actores}"/>
+                    <p class="label">Distribuidora</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.distribuidora}"/>
+                    <p class="label">Cartel</p>
+                    <h:inputText value="#{controladorModificarPelicula.pelicula.cartel}"/>
+                    <p:commandButton 
+                        value="Modificar pelicula"
+                        action="#{controladorModificarPelicula.actualiza()}"
+                        style="
+                        margin-left: 0vw;
+                        margin-top: 40px;
+                        height: 40px;
+                        border-radius: 10px;
+                        background: #009999;
+                        color: white;
+                        width: 10.6vw;"
+
+                        />
+                </section>
+            </div>
+        </h:form>
+
+    </h:body>
+
+    <footer>
+        <p>© 2024 FlickPicks</p>
+    </footer>
+</html>

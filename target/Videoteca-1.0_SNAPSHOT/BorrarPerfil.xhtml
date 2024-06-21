@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      lang="es"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Registro</title>
+        <style>
+            h4{
+                color: white;
+                margin-top: 10px;
+            }
+            header {
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                padding: 10px;
+                text-align: center;
+                height: 10vh;
+                width: 100vw;
+            }
+
+            footer {
+                position: absolute;
+                bottom: 0vh;
+                width: 100vw;
+                background-color: #333;
+                color: white;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .botones{
+                width: 15vw;
+                margin-top: 2vh;
+                margin-left: -2vw;
+                background: #555555;
+            }
+
+            .boton{
+                margin-left: 1vw;
+                height: 30px;
+                border-radius: 10px;
+                background: #009999;
+                color: white;
+                width: 5vw;
+            }
+
+            .datos{
+                position: absolute;
+                width: 20vw;
+                margin-left: 40vw;
+                height: 58vh;
+                margin-top: 5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 4.5vw;
+            }
+
+            .filtros{
+                display: flex;
+                width: 20vw;
+                margin-left: 40vw;
+                height: 10vh;
+                margin-top: 5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 2.4vw;
+            }
+
+            body {
+                background-color: #F0F0F0; /* Cambio a un gris claro */
+                font-family: Arial, sans-serif;
+                margin: 0;
+                background-image: url("./imagenes/fondoBorrarPerfil.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .rounded-button{
+                background: #009999;
+            }
+
+            .combo {
+                height: 5vh;
+                top: 2.2vh;
+                width: 15vw;
+            }
+
+            .comboTipo {
+                height: 5vh;
+                top: 0vh;
+                width: 10.6vw;
+            }
+            
+            .usuario{
+                position: absolute;
+                top:-2vh;
+                left: 5vw;
+                width: 15vw;
+            }
+        </style>
+    </h:head>
+    <header>
+        <div class="usuario">
+            <h:outputLabel style="width: 15vw; margin-top: -2vh;"><h5>usuario</h5></h:outputLabel>
+            <h:outputLabel value="#{controladorCliente.persona.correo}" style="width: 15vw; margin-top: -2vh;"/>
+        </div>
+        <h:outputLabel><h1>Modificar perfil</h1></h:outputLabel>
+    </header>
+
+    <h:body>
+        <h:form id="form">
+            <p:commandButton 
+            value="Regresar" 
+            class="boton" 
+            action="#{controladorCliente.regresarCliente()}" 
+            style="
+            position: absolute;
+            right: 2vw;
+            top: 3vh;
+            height: 40px;
+            border-radius: 10px;
+            background: #009999;
+            color: white;
+            width: 10vw;"/>
+            <section class="datos">
+                <section>
+                    <h:outputLabel><h4>Nombre</h4></h:outputLabel>
+                    <h:inputText value="#{controladorCliente.persona.nombre}" disabled="true"/>
+                    <h:outputLabel><h4>Apellidos</h4></h:outputLabel>
+                    <h:inputText value="#{controladorCliente.persona.apellidos}" disabled="true"/> 
+                    <h:outputLabel><h4>Correo</h4></h:outputLabel>
+                    <h:inputText value="#{controladorCliente.persona.correo}" disabled="true"/>
+                    <h:outputLabel><h4>Tipo de usuario</h4></h:outputLabel>
+                    <h:inputText value="#{controladorCliente.persona.tipoUsuario}" disabled="true"/>
+                </section>
+
+                <section class="botones">
+                    <p:commandButton 
+                        value="Aceptar" 
+                        ignoreAutoUpdate="true"
+                        action="#{controladorCliente.borrarUsuario()}"  
+                        class="boton"
+
+                        style="
+                        margin-left: 1vw;
+                        height: 40px;
+                        border-radius: 10px;
+                        background: #009999;
+                        color: white;
+                        width: 6vw;"
+                        />
+                    <p:button  
+                        outcome="Cliente" 
+                        value="Cancelar" 
+                        styleClass="boton" 
+
+                        style="
+                        margin-left: 1vw;
+                        height: 40px;
+                        border-radius: 10px;
+                        background: #009999;
+                        color: white;
+                        width: 6vw;"/>
+                </section>
+            </section>
+        </h:form>
+    </h:body>
+
+    <footer>
+        <p>© 2024 FlickPicks</p>
+    </footer>
+</html>

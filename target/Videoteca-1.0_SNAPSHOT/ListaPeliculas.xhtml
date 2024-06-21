@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      lang="es"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FlickPicks</title>
+        <style>
+            /* Estilos para adaptar los colores al tema de películas y series */
+            body {
+                background-color: #F0F0F0; /* Cambio a un gris claro */
+                font-family: Arial, sans-serif;
+                margin: 0;
+                background-image: url("./imagenes/fondoListaPeliculas.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            header {
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                padding: 10px;
+                text-align: center;
+                height: 10vh;
+                width: 100vw;
+            }
+
+            footer {
+                position: absolute;
+                bottom: 0vh;
+                width: 100vw;
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .datos{
+                display: flex;
+                width: 66vw;
+                margin-left: 17vw;
+                height: 60vh;
+                margin-top: 2.5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+
+            }
+
+
+            .filtros{
+                display: flex;
+                width: 20vw;
+                margin-left: 40vw;
+                height: 10vh;
+                margin-top: 5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 2.4vw;
+            }
+
+            .seccion{
+                display: block;
+                margin-left: 3.2vw;
+            }
+
+            .botones{
+                width: 15vw;
+                margin-top: 2vh;
+                margin-left: -2vw;
+                background: #555555;
+            }
+
+            .base{
+                position: absolute;
+                display: flex;
+                width: 100%;
+                height: 90%;
+
+            }
+
+            .label{
+                width: 100%;
+                margin-top: 20px;
+                color: white;
+            }
+
+            .combo {
+                height: 5vh;
+                top: 2.2vh;
+                width: 15vw;
+            }
+
+
+            h2{
+                color: white;
+            }
+
+            .usuario{
+                position: absolute;
+                top:-2vh;
+                left: 5vw;
+                width: 15vw;
+            }
+        </style>
+    </h:head>
+    <header>
+        
+        <div class="usuario">
+            <h:outputLabel style="width: 15vw; margin-top: -2vh;"><h5>usuario</h5></h:outputLabel>
+            <h:outputLabel value="#{controladorCliente.persona.correo}" style="width: 15vw; margin-top: -2vh;"/>
+        </div>
+        <h:outputLabel><h1>FlickPicks</h1></h:outputLabel>
+
+    </header>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton 
+                value="Regresar" 
+                class="boton" 
+                action="#{controladorModificarPelicula.regresar()}" 
+                style="
+                position: absolute;
+                right: 2vw;
+                top: 3vh;
+                height: 40px;
+                border-radius: 10px;
+                background: #009999;
+                color: white;
+                width: 10vw;"/>
+            <p:messages id="messages" showDetail="true" closable="true" class="error">
+                <p:autoUpdate/>
+            </p:messages>
+            <div class="filtros">
+                <p:selectOneMenu value="#{controladorModificarPelicula.pelicula.genero}" label="Seleccione Genero" class="combo">
+                    <p:ajax event="change" update="form"  listener="#{controladorModificarPelicula.conseguir()}" />
+                    <f:selectItems var="genero" value="#{controladorModificarPelicula.generos}"/>
+                </p:selectOneMenu>
+            </div>
+            <div class="datos" id="datos">
+                <p:dataTable 
+                    var="pelicula" 
+                    value="#{controladorModificarPelicula.peliculas}" 
+                    style="
+                    height: 59.3vh;
+                    width: 63vw;
+                    margin-left: 0vw;
+                    border-radius: 50px;
+                    background: #555555;
+                    color: white;
+                    margin-top: px;
+                    overflow-y: scroll;"
+                    >
+                    <!--p:column headerText="PeliculaID" class="columna">
+                        <h:outputText value="#{pelicula.PeliculaID}" />
+                    </p:column-->
+                    <p:column headerText="Titulo" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.titulo}" />
+                    </p:column>
+                    <p:column headerText="Año" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.anio}" />
+                    </p:column>
+                    <p:column headerText="Género" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.genero}" />
+                    </p:column>
+                    <p:column headerText="Director" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.director}" />
+                    </p:column>
+                    <p:column headerText="Actores principales" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.actores}" />
+                    </p:column>
+                    <p:column headerText="Duración" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.duracion}" />
+                    </p:column>
+                    <p:column headerText="Distribuidora" style="background: #555555; color:white;">
+                        <h:outputText value="#{pelicula.distribuidora}" />
+                    </p:column>
+                </p:dataTable>
+
+            </div>
+        </h:form>
+
+    </h:body>
+
+    <footer>
+        <p>© 2024 FlickPicks</p>
+    </footer>
+</html>

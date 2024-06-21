@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      lang="es"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FlickPicks</title>
+        <style>
+            /* Estilos para adaptar los colores al tema de películas y series */
+            body {
+                background-color: #F0F0F0; /* Cambio a un gris claro */
+                font-family: Arial, sans-serif;
+                margin: 0;
+                background-image: url("./imagenes/fondoAlquilar.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            header {
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                padding: 10px;
+                text-align: center;
+                height: 10vh;
+                width: 100vw;
+            }
+
+            footer {
+                position: absolute;
+                bottom: 0vh;
+                width: 100vw;
+                background-color: #333; /* Cambio a un gris oscuro */
+                color: white;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .datos{
+
+                width: 65vw;
+                margin-left: 10vw;
+                height: 70vh;
+                margin-top: 5vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 4.5vw;
+            }
+
+            .botones{
+                width: 15vw;
+                margin-top: 2vh;
+                margin-left: -2vw;
+                background: #555555;
+            }
+
+            .base{
+                position: absolute;
+                display: flex;
+                width: 100%;
+                height: 90%;
+
+            }
+
+            h2{
+                color: white;
+            }
+
+            .filtros{
+                position: absolute;
+                display: block;
+                width: 17vw;
+                right: 2vw;
+                height: 30vh;
+                margin-top: 10vh;
+                border: solid;
+                border-radius: 50px;
+                border-color: #009999;
+                background: #555555;
+                padding-left: 2.5vw;
+                padding-top: 4vh;
+            }
+
+            .combo{
+                width: 12vw;
+                color: white;
+                margin-top: 4vh;
+            }
+            .usuario{
+                position: absolute;
+                top:-2vh;
+                left: 5vw;
+                width: 15vw;
+            }
+            .ui-datatable .ui-datatable-data .ui-state-hover td {  
+                color: black;
+                background-color: #777777;
+            }
+
+            .ui-datatable .ui-datatable-data .ui-state-highlight td {  
+                color: white;
+                background-color: #335599;
+            }
+
+            .ui-datatable .ui-datatable-data td {
+                background-color: #555555;
+                color: white;
+            }
+
+            .ui-datatable  .ui-state-default{
+                background-color: #444444;
+                color: white;
+                border-color: #444444;
+            }
+
+        </style>
+    </h:head>
+    <header>
+        <p:button 
+            value="Regresar" 
+            class="boton" 
+            outcome="Cliente" 
+            style="
+            position: absolute;
+            right: 2vw;
+            top: 3vh;
+            height: 40px;
+            border-radius: 10px;
+            background: #009999;
+            color: white;
+            width: 10vw;"/>
+        <div class="usuario">
+            <h:outputLabel style="width: 15vw; margin-top: -2vh;"><h5>usuario</h5></h:outputLabel>
+            <h:outputLabel value="#{controladorCliente.persona.correo}" style="width: 15vw; margin-top: -2vh;"/>
+        </div>
+        <h:outputLabel><h1>FlickPicks</h1></h:outputLabel>
+
+    </header>
+
+    <h:body>
+        <p:messages id="messages" showDetail="true" closable="true" class="error">
+            <p:autoUpdate/>
+        </p:messages>
+        <div class="base">
+            <section class="datos">
+                <h:form id="form" >
+                    
+                    <div class="filtros">
+                        <p:selectBooleanCheckbox  itemLabel="Pendientes de ver" class="combo" id="combo" value="#{controladorAlquilar.activo}">
+                            <p:ajax update="form" event="change" listener="#{controladorAlquilar.consiguePeliculas()}" />
+                        </p:selectBooleanCheckbox>
+
+                        <p:selectOneMenu value="#{controladorAlquilar.pelicula.genero}" class="combo" id="generos" disabled="#{controladorAlquilar.activo}">
+                            <p:ajax event="change" update="form"  listener="#{controladorAlquilar.ponerAnio()}" />
+                            <f:selectItems var="genero" value="#{controladorModificarPelicula.generos}"/>
+                        </p:selectOneMenu>
+
+                        <p:selectOneMenu value="#{controladorAlquilar.pelicula.anio}" class="combo" id="anio"  disabled="#{controladorAlquilar.activo}">
+                            <p:ajax event="change" update="form"  listener="#{controladorAlquilar.consiguePeliculas()}" />
+                            <f:selectItems value="#{controladorAlquilar.anios}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <p:dataTable 
+                        var="peli"
+                        value="#{controladorAlquilar.peliculas}" 
+                        rowKey="#{peli.peliculaID}" 
+                        selection="#{controladorAlquilar.pelicula}"
+                        selectionMode="single"
+
+                        rowHover="bacground: red"
+                        style="
+                        width: 95%;
+                        height: 69.2vh;
+                        margin-left: 0vw;
+                        background: #555555;
+                        color: white;
+                        margin-top: px;
+                        overflow-y: scroll;"
+
+                        >
+                        <p:column headerText="Cartel">
+                            <h:graphicImage value="#{peli.cartel}" style="height: 200px;"/>
+                        </p:column>
+                        <p:column headerText="Titulo">
+                            <h:outputText value="#{peli.titulo}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton 
+                        value="Alquilar" 
+                        class="boton" 
+                        action="#{controladorAlquilar.alquilar()}" 
+                        style="
+                        position: absolute;
+                        right: 5vw;
+                        top: 53vh;
+                        height: 40px;
+                        border-radius: 10px;
+                        background: #009999;
+                        color: white;
+                        width: 10vw;"/>
+                </h:form>
+            </section>
+        </div>
+    </h:body>
+
+    <footer>
+        <p>© 2024 FlickPicks</p>
+    </footer>
+</html>
